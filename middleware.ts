@@ -1,19 +1,23 @@
-// refers to https://github.com/vercel/next.js/tree/canary/examples/app-dir-i18n-routing
+// modify from https://github.com/vercel/next.js/tree/canary/examples/app-dir-i18n-routing
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { i18n } from '@/i18n-config';
+import { i18n, LOCALE_COOKIE_NAME } from '@/i18n-config';
 
-function getLocale(request: NextRequest): string | undefined {
-  // Negotiator expects plain object so we need to transform headers
+function getLocale(request: NextRequest): string {
+  // cookie set on client side javascript whenever select lang on LocaleSwitcher
+  if (request.cookies.has(LOCALE_COOKIE_NAME)) {
+    let cookie = request.cookies.get(LOCALE_COOKIE_NAME)!;
+    return cookie.value;
+  }
+
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
   // @ts-ignore locales are readonly
   const locales: string[] = i18n.locales;
 
-  // Use negotiator and intl-localematcher to get best locale
   let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
     locales,
   );
@@ -24,18 +28,9 @@ function getLocale(request: NextRequest): string | undefined {
 }
 
 export function middleware(request: NextRequest) {
+  // Setting cookies on the response using the `ResponseCookies` API
+  const response = NextResponse.next();
   const pathname = request.nextUrl.pathname;
-
-  // // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
-  // // If you have one
-  // if (
-  //   [
-  //     '/manifest.json',
-  //     '/favicon.ico',
-  //     // Your other files in `public`
-  //   ].includes(pathname)
-  // )
-  //   return
 
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(

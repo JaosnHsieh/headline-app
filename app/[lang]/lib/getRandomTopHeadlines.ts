@@ -28,11 +28,16 @@ export type TopHeadlineApiResError = {
 };
 export type TopHeadlineApiRes = TopHeadlineApiResOk | TopHeadlineApiResError;
 
+const PAGE_SIZE = 20;
+
 export async function getCategoryHeadlines(
   category = HEADLINE_CATEGORIES[0],
+  lang = '',
 ): Promise<HeadlineArticle[]> {
+  const qsLang = lang === '' ? '' : `&language=${lang}`;
+
   const res = await fetch(
-    `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=10`,
+    `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=${PAGE_SIZE}${qsLang}`,
     { cache: 'force-cache' },
   );
   if (!res.ok) {
@@ -45,26 +50,22 @@ export async function getCategoryHeadlines(
   return json.articles as HeadlineArticle[];
 }
 export async function getRandomTopHeadlines(
-  {
-    size,
-  }: {
-    size: number;
-  } = {
-    size: 1,
-  },
+  lang = '',
+  size = 1,
 ): Promise<HeadlineArticle[]> {
   const categories = sampleSize(HEADLINE_CATEGORIES, size);
   const countries = sampleSize(HEADLINE_COUNTRIES, size);
+  const qsLang = lang === '' ? '' : `&language=${lang}`;
   const fetches = [
     ...categories.map((category) =>
       fetch(
-        `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=10`,
+        `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=${PAGE_SIZE}${qsLang}`,
         { cache: 'force-cache' },
       ),
     ),
     ...countries.map((country) =>
       fetch(
-        `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=10`,
+        `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWSAPI_KEY}&pageSize=${PAGE_SIZE}${qsLang}`,
         { cache: 'force-cache' },
       ),
     ),

@@ -1,7 +1,14 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { i18n, type Locale } from '../../../i18n-config';
+import { i18n, type Locale, LOCALE_COOKIE_NAME } from '../../../i18n-config';
+
+function setCookie(cname: string, cvalue: string, exdays = 360) {
+  const d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  let expires = 'expires=' + d.toUTCString();
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+}
 
 export function LocaleSwitcher() {
   const pathName = usePathname();
@@ -11,6 +18,7 @@ export function LocaleSwitcher() {
     if (!pathName) return '/';
     const segments = pathName.split('/');
     segments[1] = locale;
+    setCookie(LOCALE_COOKIE_NAME, locale);
     return segments.join('/');
   };
 

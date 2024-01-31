@@ -1,9 +1,6 @@
 {
-  "server-component": {
-    "welcome": "Welcome"
-  },
-  "counter": {
-    "increment": "Increment",
-    "decrement": "Decrement"
+  "nav": {
+    "headlines": "Headlines",
+    "categories": "Categories"
   }
 }

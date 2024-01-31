@@ -1,5 +1,5 @@
-import { getRandomTopHeadlines } from './lib/getRandomTopHeadlines';
-import { Headline } from './components/Headline';
+import { getRandomTopHeadlines } from '@/app/[lang]/lib/getRandomTopHeadlines';
+import { Headline } from '@/app/[lang]/components/Headline';
 
 export default async function Home({
   params,

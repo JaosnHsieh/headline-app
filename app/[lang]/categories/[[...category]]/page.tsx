@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import capitalize from 'lodash.capitalize';
-import { HEADLINE_CATEGORIES } from '../../consts';
-import { getCategoryHeadlines } from '../../lib/getRandomTopHeadlines';
-import { Headline } from '../../components/Headline';
+import { HEADLINE_CATEGORIES } from '@/app/[lang]/consts';
+import { getCategoryHeadlines } from '@/app/[lang]/lib/getRandomTopHeadlines';
+import { Headline } from '@/app/[lang]/components/Headline';
 
 function CategoriesSelector({ category }: { category: string }) {
   return (

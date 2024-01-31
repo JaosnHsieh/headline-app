@@ -18,6 +18,12 @@ function CategoriesSelector({
   category: string;
   lang: string;
 }) {
+  // fix tailwind css classes missing issue from https://tailwindcss.com/docs/content-configuration#dynamic-class-names
+  const colorVariants = {
+    active: 'p-4 rounded shadow bg-slate-500 text-white',
+    inactive:
+      'p-4 rounded shadow bg-white hover:bg-slate-400 hover:text-white cursor-pointer',
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
@@ -26,11 +32,9 @@ function CategoriesSelector({
           return (
             <Link href={`/${lang}/categories/${cat}`} key={cat}>
               <div
-                className={`bg-white p-4 rounded shadow ${
-                  isActive
-                    ? 'bg-slate-500 text-white'
-                    : 'hover:bg-slate-400 hover:text-white cursor-pointer'
-                }`}
+                className={
+                  isActive ? colorVariants['active'] : colorVariants['inactive']
+                }
               >
                 {capitalize(cat)}
               </div>

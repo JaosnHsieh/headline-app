@@ -1,5 +1,12 @@
+import type { Metadata } from 'next';
 import { getRandomTopHeadlines } from '@/app/[lang]/lib/getRandomTopHeadlines';
 import { Headline } from '@/app/[lang]/components/Headline';
+
+export const metadata: Metadata = {
+  title: 'Headlines app homepage',
+  description:
+    'an app provides multiple languages headlines from multiple countries.',
+};
 
 export default async function Home({
   params,

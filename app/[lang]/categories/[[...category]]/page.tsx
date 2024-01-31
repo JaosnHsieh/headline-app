@@ -1,9 +1,15 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import capitalize from 'lodash.capitalize';
 import { HEADLINE_CATEGORIES } from '@/app/[lang]/consts';
 import { getCategoryHeadlines } from '@/app/[lang]/lib/getRandomTopHeadlines';
 import { Headline } from '@/app/[lang]/components/Headline';
+
+export const metadata: Metadata = {
+  title: 'Headlines app category',
+  description: 'show a category of headlines',
+};
 
 function CategoriesSelector({
   category,
